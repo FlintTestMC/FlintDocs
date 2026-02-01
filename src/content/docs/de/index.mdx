@@ -1,0 +1,54 @@
+---
+title: Flint
+description: Ein Testing framework für Minecraft in Rust.
+template: splash
+hero:
+  tagline: Ein Testing framework für Minecraft in Rust
+  actions:
+    - text: Komm herein
+      link: ./flint/introduction/
+      icon: right-arrow
+    - text: Besuche uns auf GitHub
+      link: https://github.com/FlintTestMC
+      icon: github
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Warum Flint?
+
+### Für Server-Entwickler
+<CardGrid stagger>
+  <Card title="Automatisierte Regressionstests" icon="puzzle">
+    Stelle sicher, dass Änderungen nichts kaputt machen.
+  </Card>
+  <Card title="Minecraft-Verhaltenstests" icon="puzzle">
+    Überprüfe, ob dein Server wie Vanilla funktioniert.
+  </Card>
+  <Card title="CI/CD-Integration" icon="puzzle">
+    Tests laufen automatisch bei jedem Commit.
+  </Card>
+  <Card title="Vielfalt" icon="puzzle">
+    Verschiedene Versionen für die beste Anpassung an deinen Server.
+  </Card>
+  <Card title="Solide Basis" icon="laptop">
+    Jedes System ist mit Blick auf die Zukunft entwickelt und gewährleistet Anpassungsfähigkeit.
+  </Card>
+  <Card title="Open Source" icon="github">
+    Vollständig Open Source und Community-getrieben. Tritt uns auf Discord bei und beteilige dich auf GitHub.
+  </Card>
+</CardGrid>
+
+### Für Testersteller
+<CardGrid stagger>
+  <Card title="Kein Rust wissen benötigt" icon="puzzle">
+    Die Tests sind rein in JSON geschrieben.
+  </Card>
+  <Card title="Wiederverwendbarkeit" icon="puzzle">
+    Tests funktionieren auf allen server, welche FlintCLI und flint implementiert haben.
+  </Card>
+  <Card title="Lesbarkeit" icon="puzzle">
+    JSON ist selbst erklärend.
+  </Card>
+</CardGrid>
