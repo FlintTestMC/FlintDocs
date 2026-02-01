@@ -6,6 +6,7 @@ sidebar:
 ---
 
 This guide explains how to integrate Flint into your Minecraft server implementation.
+The used environment variables can be found [here](../../ENV)
 
 ## Overview
 
@@ -349,11 +350,3 @@ fn main() {
     std::process::exit(if summary.all_passed() { 0 } else { 1 });
 }
 ```
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `TEST_PATH` | `./test` | Base directory for tests |
-| `INDEX_NAME` | `.cache/index.json` | Path to index cache file |
-| `DEFAULT_TAG` | `default` | Tag for tests without tags |

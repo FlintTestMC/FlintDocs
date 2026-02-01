@@ -73,6 +73,11 @@ export default defineConfig({
               label: "Contributing",
               translations: { de: "Beitragen" },
             },
+            {
+              slug: "flint/env",
+              label: "Environment Variables",
+              translations: { de: "Environment Variablen" },
+            },
           ],
         },
       ],
