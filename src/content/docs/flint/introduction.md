@@ -5,7 +5,12 @@ sidebar:
   order: 1
 ---
 
-Flint is a Rust library that enables testing of Minecraft servers. With a declarative JSON format, server implementations can be tested deterministically and reproducibly.
+Flint is a testing framework for Minecraft servers. It consists of two main components:
+
+- **Flint Core** - A Rust library that defines the test format and provides the execution engine
+- **FlintCLI** - A command-line tool that runs tests against live Minecraft servers
+
+With a declarative JSON format, server implementations can be tested deterministically and reproducibly.
 
 ## What is Flint?
 
@@ -27,30 +32,6 @@ Each test is a JSON file containing:
 - Optional **player configuration** for inventory tests
 - **Tags** for organization
 
-### Adapter Pattern
-
-Flint uses a trait-based design:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                      Flint Core                         │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
-│  │ TestLoader  │  │ TestRunner  │  │ ResultFormatter │  │
-│  └─────────────┘  └──────┬──────┘  └─────────────────┘  │
-└──────────────────────────┼──────────────────────────────┘
-                           │
-                           ▼
-┌──────────────────────────────────────────────────────────┐
-│                    Server Adapter                         │
-│  ┌──────────────┐  ┌────────────┐  ┌──────────────────┐  │
-│  │ FlintAdapter │  │ FlintWorld │  │   FlintPlayer    │  │
-│  └──────────────┘  └────────────┘  └──────────────────┘  │
-└──────────────────────────────────────────────────────────┘
-```
-
-- **FlintAdapter** - Creates test worlds
-- **FlintWorld** - Executes block operations and ticks
-- **FlintPlayer** - Manages inventory and item interactions
 
 ### Timeline Execution
 
@@ -64,6 +45,7 @@ This guarantees deterministic, reproducible results.
 
 ## Next Steps
 
-- [Quickstart](./quickstart/) - Write your first test
-- [Test Format](./testformat/overview/) - Complete reference
-- [Server Integration](./integration/) - Integrate Flint into your server
+- [Quickstart](../quickstart/) - Write your first test
+- [FlintCLI](../tools/flintcli/) - Run tests with the CLI tool
+- [Test Format](../testformat/overview/) - Complete reference
+- [Server Integration](../integration/) - Integrate Flint into your server

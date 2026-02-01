@@ -55,6 +55,11 @@ export default defineConfig({
           autogenerate: { directory: "flint/guides" },
         },
         {
+          label: "Tools",
+          translations: { de: "Werkzeuge" },
+          autogenerate: { directory: "flint/tools" },
+        },
+        {
           label: "Advanced",
           translations: { de: "Fortgeschritten" },
           items: [

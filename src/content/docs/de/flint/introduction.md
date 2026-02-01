@@ -5,7 +5,12 @@ sidebar:
   order: 1
 ---
 
-Flint ist eine Rust-Bibliothek, die das Testen von Minecraft-Servern ermöglicht. Mit einem deklarativen JSON-Format können Server-Implementierungen deterministisch und reproduzierbar getestet werden.
+Flint ist ein Test-Framework für Minecraft-Server. Es besteht aus zwei Hauptkomponenten:
+
+- **Flint Core** - Eine Rust-Bibliothek, die das Testformat definiert und die Ausführungsengine bereitstellt
+- **FlintCLI** - Ein Kommandozeilen-Tool, das Tests gegen laufende Minecraft-Server ausführt
+
+Mit einem deklarativen JSON-Format können Server-Implementierungen deterministisch und reproduzierbar getestet werden.
 
 ## Was ist Flint?
 
@@ -27,31 +32,6 @@ Jeder Test ist eine JSON-Datei mit:
 - Optionaler **Spieler-Konfiguration** für Inventar-Tests
 - **Tags** zur Organisation
 
-### Adapter-Pattern
-
-Flint verwendet ein Trait-basiertes Design:
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                      Flint Core                         │
-│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
-│  │ TestLoader  │  │ TestRunner  │  │ ResultFormatter │  │
-│  └─────────────┘  └──────┬──────┘  └─────────────────┘  │
-└──────────────────────────┼──────────────────────────────┘
-                           │
-                           ▼
-┌──────────────────────────────────────────────────────────┐
-│                    Server Adapter                         │
-│  ┌──────────────┐  ┌────────────┐  ┌──────────────────┐  │
-│  │ FlintAdapter │  │ FlintWorld │  │   FlintPlayer    │  │
-│  └──────────────┘  └────────────┘  └──────────────────┘  │
-└──────────────────────────────────────────────────────────┘
-```
-
-- **FlintAdapter** - Erstellt Test-Welten
-- **FlintWorld** - Führt Block-Operationen und Ticks aus
-- **FlintPlayer** - Verwaltet Inventar und Item-Interaktionen
-
 ### Timeline-Ausführung
 
 Tests laufen Tick für Tick ab:
@@ -68,6 +48,7 @@ Flint Core ist Open Source: [github.com/FlintTestMC/flint-core](https://github.c
 
 ## Nächste Schritte
 
-- [Schnellstart](./quickstart/) - Schreibe deinen ersten Test
-- [Testformat](./testformat/overview/) - Vollständige Referenz
-- [Integration](./integration/) - Integriere Flint in deinen Server
+- [Schnellstart](../quickstart/) - Schreibe deinen ersten Test
+- [FlintCLI](../tools/flintcli/) - Tests mit dem CLI-Tool ausführen
+- [Testformat](../testformat/overview/) - Vollständige Referenz
+- [Integration](../integration/) - Integriere Flint in deinen Server
