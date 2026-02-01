@@ -135,3 +135,13 @@ Füge Zwischen-Assertions ein.
   "description": "Setup: Redstone-Block -> Wire -> Repeater(4) -> Wire. Erwartet: Nach 8 Ticks Output powered."
 }
 ```
+
+## Deine Tests beitragen
+
+Tests, die Vanilla-Minecraft-Verhalten validieren, sollten zu [FlintBench](../../tools/flintbench) beigetragen werden, der offiziellen Test-Sammlung. Das stellt sicher, dass Tests:
+
+- Der gesamten Community zur Verfügung stehen
+- Richtig organisiert und formatiert sind
+- Zur Validierung von Server-Implementierungen verwendet werden
+
+Siehe die [FlintBench-Dokumentation](../../tools/flintbench) für Beitragsrichtlinien.

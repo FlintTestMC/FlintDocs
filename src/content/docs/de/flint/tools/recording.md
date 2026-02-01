@@ -131,7 +131,17 @@ Die Aufnahme erstellt einen guten Ausgangspunkt, aber du möchtest vielleicht:
 - Die Cleanup-Region anpassen
 - Breakpoints zum Debuggen hinzufügen
 
+## Zu FlintBench beitragen
+
+Tests, die Vanilla-Minecraft-Verhalten validieren, sollten zu [FlintBench](../flintbench/) beigetragen werden, der offiziellen Test-Sammlung. Nach dem Aufnehmen eines Tests:
+
+1. Forke das FlintBenchmark-Repository
+2. Platziere deinen Test im passenden Kategorie-Ordner
+3. Führe `npm run format` aus, um das JSON zu formatieren
+4. Erstelle einen Pull Request
+
 ## Nächste Schritte
 
-- [FlintCLI-Referenz](./flintcli/) - Vollständige Befehlsreferenz
-- [Testformat](../testformat/overview/) - Das generierte JSON-Format verstehen
+- [FlintBench](../flintbench/) - Trage deine Tests zur offiziellen Sammlung bei
+- [FlintCLI-Referenz](../flintcli/) - Vollständige Befehlsreferenz
+- [Testformat](../../testformat/overview/) - Das generierte JSON-Format verstehen

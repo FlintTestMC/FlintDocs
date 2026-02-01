@@ -5,10 +5,11 @@ sidebar:
   order: 1
 ---
 
-Flint is a testing framework for Minecraft servers. It consists of two main components:
+Flint is a testing framework for Minecraft servers. It consists of three main components:
 
 - **Flint Core** - A Rust library that defines the test format and provides the execution engine
 - **FlintCLI** - A command-line tool that runs tests against live Minecraft servers
+- **FlintBench** - The official test collection for validating vanilla Minecraft behavior
 
 With a declarative JSON format, server implementations can be tested deterministically and reproducibly.
 
@@ -47,5 +48,6 @@ This guarantees deterministic, reproducible results.
 
 - [Quickstart](../quickstart/) - Write your first test
 - [FlintCLI](../tools/flintcli/) - Run tests with the CLI tool
+- [FlintBench](../tools/flintbench/) - Browse and run the official test suite
 - [Test Format](../testformat/overview/) - Complete reference
 - [Server Integration](../integration/) - Integrate Flint into your server

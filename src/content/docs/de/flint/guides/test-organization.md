@@ -7,6 +7,10 @@ sidebar:
 
 Eine gute Testorganisation macht Tests wartbar und auffindbar.
 
+:::tip[FlintBench]
+Alle Community-Tests, die Vanilla-Minecraft-Verhalten validieren, sollten zu [FlintBench](../../tools/flintbench/) beigetragen werden, der offiziellen Test-Sammlung. FlintBench folgt den in diesem Guide beschriebenen Organisationsmustern.
+:::
+
 ## Verzeichnisstruktur
 
 ```

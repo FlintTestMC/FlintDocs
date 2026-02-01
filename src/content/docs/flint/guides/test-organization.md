@@ -7,6 +7,10 @@ sidebar:
 
 Good test organization makes tests maintainable, discoverable, and reusable.
 
+:::tip[FlintBench]
+All community tests that validate vanilla Minecraft behavior should be contributed to [FlintBench](../../tools/flintbench/), the official test collection. FlintBench follows the organization patterns described in this guide.
+:::
+
 ## Directory Structure
 
 ### By Category

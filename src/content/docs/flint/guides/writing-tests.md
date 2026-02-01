@@ -315,3 +315,13 @@ For debug sessions:
   "description": "Verifies that a repeater on level 4 delays exactly 8 game ticks. Setup: Redstone block -> Wire -> Repeater(4) -> Wire. Expected: After 8 ticks the output wire is powered."
 }
 ```
+
+## Contributing Your Tests
+
+Tests that validate vanilla Minecraft behavior should be contributed to [FlintBench](../../tools/flintbench/), the official test collection. This ensures tests are:
+
+- Available to the entire community
+- Properly organized and formatted
+- Used to validate server implementations
+
+See the [FlintBench documentation](../../tools/flintbench/) for contribution guidelines.

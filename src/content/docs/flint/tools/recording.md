@@ -131,7 +131,17 @@ Recording creates a good starting point, but you may want to:
 - Adjust the cleanup region
 - Add breakpoints for debugging
 
+## Contributing to FlintBench
+
+Tests that validate vanilla Minecraft behavior should be contributed to [FlintBench](../flintbench/), the official test collection. After recording a test:
+
+1. Fork the FlintBenchmark repository
+2. Place your test in the appropriate category folder
+3. Run `npm run format` to format the JSON
+4. Submit a pull request
+
 ## Next Steps
 
+- [FlintBench](../flintbench/) - Contribute your tests to the official collection
 - [FlintCLI Reference](../flintcli/) - Complete command reference
 - [Test Format](../../testformat/overview/) - Understand the generated JSON format
