@@ -41,6 +41,24 @@ Flint-Steel provides:
 
 ## Usage
 
+Go into the steel repo and do there the git clone from flint. Add flint-steel, as a member in the Cargo.toml.
+In adapter there are already to flint tests prewritten.
+
+for debugging select the flint profile in steel.
+
+create in the steel root dir, the .env file with all necessary variables for your test.
+
+The two working commands are, for a single, test or pattern/tags:
+```bash
+cargo test -p flint-steel test_run_flint_selected
+```
+
+for multiple tests
+```bash
+cargo test -p flint-steel test_run_all_flint_benchmarks
+```
+
+
 ### In Rust Tests
 
 ```rust
