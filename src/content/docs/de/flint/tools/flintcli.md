@@ -15,6 +15,8 @@ FlintCLI ist ein Kommandozeilen-Tool, das sich mit Minecraft-Servern verbindet, 
 - **Interaktiver Modus** - Tests über In-Game-Chat-Befehle ausführen
 - **Test-Aufnahme** - Tests durch Spielen im Spiel aufnehmen
 - **Debugging** - Breakpoints und schrittweise Ausführung
+- **Shell-Completions** - Completions für unterstützte Shells generieren
+- **Event-Stream** - Tick-Diffs als JSONL für Visualisierungstools ausgeben
 
 ## Installation
 
@@ -101,6 +103,12 @@ flintmc tests/ --dry-run
 
 # Nach Setup pausieren zur Inspektion
 flintmc tests/ -s localhost:25565 --break-after-setup
+
+# Shell-Completions generieren
+flintmc --completions zsh > _flintmc
+
+# Tick-Events für einen Test schreiben
+flintmc tests/basic.json -s localhost:25565 --emit-events run.jsonl
 ```
 
 ## Kommandozeilen-Optionen
@@ -119,6 +127,8 @@ flintmc tests/ -s localhost:25565 --break-after-setup
 | `--list` | | Tests auflisten und beenden |
 | `--dry-run` | | Plan anzeigen ohne Verbindung |
 | `--format <FORMAT>` | | Ausgabe: pretty, json, tap, junit |
+| `--completions <SHELL>` | | Shell-Completions generieren und beenden |
+| `--emit-events <PATH>` | | Tick-Events als JSONL schreiben; benötigt genau eine Testdatei |
 
 ## Interaktiver Modus
 
@@ -138,11 +148,29 @@ Alle Befehle beginnen mit `!`:
 | `!list` | Geladene Tests auflisten |
 | `!search <pattern>` | Tests nach Name suchen |
 | `!run <name>` | Einen bestimmten Test ausführen |
+| `!run <name> step` | Test ausführen und nach jedem Tick pausieren |
 | `!run-all` | Alle Tests ausführen |
 | `!run-tags <tag1,tag2>` | Tests nach Tags ausführen |
 | `!reload` | Tests von der Festplatte neu laden |
 | `!record <name>` | Test-Aufnahme starten |
+| `!tick` / `!next` | Bei Aufnahme Änderungen erfassen und einen Tick weitergehen |
+| `!assert <x> <y> <z>` | Bei Aufnahme einen Blockzustand als Assertion erfassen |
+| `!assert_changes` | Aktuelle Blockänderungen in Assertions umwandeln |
+| `!sprint <ticks>` | Bei Aufnahme wiederholt ticken und die letzte Assertion erneut prüfen |
+| `!save` | Aktuelle Aufnahme speichern |
+| `!cancel` | Aktuelle Aufnahme verwerfen |
 | `!stop` | Interaktiven Modus beenden |
+
+## Event JSONL
+
+`--emit-events` ist für Tools gedacht, die einen echten Serverlauf nachspielen wollen. Es erzwingt Single-Step-Ausführung, scannt nach jedem Tick die Cleanup-Region und schreibt Events in testlokalen Koordinaten:
+
+```json
+{"type":"run_started","test":"basic","region":[[0,0,0],[2,2,2]]}
+{"type":"tick","tick":1,"set":[{"pos":[0,0,0],"id":"minecraft:stone"}],"removed":[]}
+{"type":"assert","tick":2,"pos":[0,0,0],"passed":true,"expected":"minecraft:stone","actual":"minecraft:stone"}
+{"type":"run_completed","asserts_passed":1,"asserts_failed":0}
+```
 
 ## Fehlerbehebung
 
@@ -161,4 +189,4 @@ Versuche die Tick-Verzögerung mit `-d 200` zu erhöhen oder überprüfe die Blo
 ## Nächste Schritte
 
 - [Tests aufnehmen](./recording/) - Tests durch Spielen im Spiel erstellen
-- [Testformat](../testformat/overview/) - Vollständige Testformat-Referenz
+- [Testformat](../../testformat/overview/) - Vollständige Testformat-Referenz

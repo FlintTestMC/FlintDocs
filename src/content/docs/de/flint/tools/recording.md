@@ -28,18 +28,19 @@ flintmc -s localhost:25565 -i
 Nach dem Start der Aufnahme:
 
 1. **Blöcke platzieren** - Alle Block-Änderungen werden mit ihrem Tick-Timing erfasst
-2. **Ticks voranschreiten** - Benutze `!tick` oder `!tick <anzahl>` um vorwärts zu gehen
-3. **Assertions hinzufügen** - Benutze `!assert` um aktuelle Block-Zustände zu überprüfen
+2. **Ticks voranschreiten** - Benutze `!tick` oder `!next`, um Änderungen zu erfassen und einen Tick weiterzugehen
+3. **Assertions hinzufügen** - Benutze `!assert <x> <y> <z>`, um den aktuellen Block an einer Weltposition zu erfassen
 4. **Test speichern** - Benutze `!save` wenn fertig
 
 ## Aufnahme-Befehle
 
 | Befehl | Beschreibung |
 |--------|--------------|
-| `!tick` | Einen Game-Tick voranschreiten |
-| `!tick <n>` | n Game-Ticks voranschreiten |
-| `!assert` | Alle Änderungen seit letztem Assert prüfen |
-| `!assert_changes` | Nur geänderte Blöcke prüfen |
+| `!record <name> [player]` | Aufnahme starten; optionaler Spieler steuert Scan-Zentrum |
+| `!tick` / `!next` | Änderungen erfassen, einen Game-Tick ausführen und Aufnahmezeit erhöhen |
+| `!assert <x> <y> <z>` | Block an diesen Weltkoordinaten als Assertion erfassen |
+| `!assert_changes` | Erkannte Änderungen im aktuellen Aufnahme-Tick in Assertions umwandeln |
+| `!sprint <ticks>` | Wiederholt ticken und die zuletzt gesetzte Assertion erneut prüfen |
 | `!save` | Aufnahme speichern und beenden |
 | `!cancel` | Aufnahme verwerfen |
 
@@ -59,8 +60,8 @@ Bot: Tick 1
 Spieler: !tick
 Bot: Tick 2
 
-Spieler: !assert
-Bot: 2 Assertions bei Tick 2 hinzugefügt
+Spieler: !assert 0 100 0
+Bot: Assertion bei [0, 100, 0] = minecraft:oak_fence[east=true] hinzugefügt
 
 Spieler: !save
 Bot: Test gespeichert als fence_test.json
@@ -72,8 +73,8 @@ Die Aufnahme generiert eine vollständige Testdatei:
 
 ```json
 {
-  "flintVersion": "0.1",
   "name": "fence_test",
+  "tags": ["recorded"],
   "setup": {
     "cleanup": {
       "region": [[-5, 95, -5], [5, 105, 5]]
@@ -96,7 +97,7 @@ Die Aufnahme generiert eine vollständige Testdatei:
       "at": 2,
       "do": "assert",
       "checks": [
-        { "pos": [0, 100, 0], "is": { "id": "minecraft:oak_fence", "state": { "east": "true" } } },
+        { "pos": [0, 100, 0], "is": { "id": "minecraft:oak_fence", "east": "true" } },
         { "pos": [1, 100, 0], "is": { "id": "minecraft:stone" } }
       ]
     }
@@ -118,8 +119,9 @@ Die Aufnahme berechnet automatisch eine Cleanup-Region, die alle platzierten Bl�
 
 ### Assertions
 
-- `!assert` erfasst den vollständigen Zustand aller platzierten Blöcke
-- `!assert_changes` erfasst nur Blöcke, die sich seit der letzten Assertion geändert haben
+- `!assert <x> <y> <z>` erfasst den Block an einer Position
+- `!assert_changes` wandelt alle im aktuellen Tick erkannten Placements/Removals in Assertions um
+- `!sprint <ticks>` ist nützlich für wiederholte Timing-Prüfungen nach einer ersten Assertion
 - Du kannst mehrere Assertions zu verschiedenen Tick-Zeitpunkten hinzufügen
 
 ### Generierte Tests bearbeiten
@@ -133,7 +135,7 @@ Die Aufnahme erstellt einen guten Ausgangspunkt, aber du möchtest vielleicht:
 
 ## Zu FlintBench beitragen
 
-Tests, die Vanilla-Minecraft-Verhalten validieren, sollten zu [FlintBench](../flintbench/) beigetragen werden, der offiziellen Test-Sammlung. Nach dem Aufnehmen eines Tests:
+Tests, die Vanilla-Minecraft-Verhalten validieren, sollten zu [FlintBench](./flintbench/) beigetragen werden, der offiziellen Test-Sammlung. Nach dem Aufnehmen eines Tests:
 
 1. Forke das FlintBenchmark-Repository
 2. Platziere deinen Test im passenden Kategorie-Ordner
@@ -142,6 +144,6 @@ Tests, die Vanilla-Minecraft-Verhalten validieren, sollten zu [FlintBench](../fl
 
 ## Nächste Schritte
 
-- [FlintBench](../flintbench/) - Trage deine Tests zur offiziellen Sammlung bei
-- [FlintCLI-Referenz](../flintcli/) - Vollständige Befehlsreferenz
+- [FlintBench](./flintbench/) - Trage deine Tests zur offiziellen Sammlung bei
+- [FlintCLI-Referenz](./flintcli/) - Vollständige Befehlsreferenz
 - [Testformat](../../testformat/overview/) - Das generierte JSON-Format verstehen

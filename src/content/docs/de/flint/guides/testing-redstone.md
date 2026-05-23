@@ -29,7 +29,7 @@ Redstone ist komplex und erfordert präzises Timing. Dieser Guide zeigt, wie du 
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:redstone_block" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
@@ -57,7 +57,7 @@ Redstone ist komplex und erfordert präzises Timing. Dieser Guide zeigt, wie du 
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
         { "pos": [2, 0, 0], "block": { "id": "minecraft:repeater", "facing": "west", "delay": 4 }},
@@ -80,7 +80,7 @@ Redstone ist komplex und erfordert präzises Timing. Dieser Guide zeigt, wie du 
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:piston", "facing": "east" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:stone" } }
@@ -102,5 +102,5 @@ Redstone ist komplex und erfordert präzises Timing. Dieser Guide zeigt, wie du 
 ## Tipps
 
 1. **Timing großzügig wählen** - Lieber einen Tick mehr warten
-2. **placeEach für Setup** - Vermeidet ungewollte Zwischen-Updates
+2. **place_each für Setup** - Vermeidet ungewollte Zwischen-Updates
 3. **Power-Level genau prüfen** - 0-15, nicht nur an/aus

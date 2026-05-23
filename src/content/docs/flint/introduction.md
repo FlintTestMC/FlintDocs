@@ -5,12 +5,14 @@ sidebar:
   order: 1
 ---
 
-Flint is a testing framework for Minecraft servers. It consists of four main components:
+Flint is a testing framework for Minecraft servers. It consists of these main components:
 
 - **Flint Core** - A Rust library that defines the test format and provides the execution engine
 - **FlintCLI** - A command-line tool that runs tests against live Minecraft servers (black-box testing)
 - **Flint-Steel** - The Flint adapter for SteelMC enabling white-box testing
 - **FlintBench** - The official test collection for validating vanilla Minecraft behavior
+- **FlintViz** - A local visualizer for inspecting Flint tests and failure links
+- **JetBrains Plugin** - IDE integration for flint-steel runs and FlintViz
 
 With a declarative JSON format, server implementations can be tested deterministically and reproducibly.
 
@@ -51,5 +53,7 @@ This guarantees deterministic, reproducible results.
 - [FlintCLI](../tools/flintcli/) - Run tests with the CLI tool (black-box)
 - [Flint-Steel](../tools/flint-steel/) - Run tests directly in SteelMC (white-box)
 - [FlintBench](../tools/flintbench/) - Browse and run the official test suite
+- [FlintViz](../tools/flint-viz/) - Inspect tests visually
+- [JetBrains Plugin](../tools/jetbrains-plugin/) - Run Flint from RustRover or JetBrains IDEs
 - [Test Format](../testformat/overview/) - Complete reference
 - [Server Integration](../integration/) - Integrate Flint into your server

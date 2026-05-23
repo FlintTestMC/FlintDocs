@@ -1,9 +1,9 @@
 ---
 title: Flint
-description: Ein Testing framework für Minecraft in Rust.
+description: Ein Testframework für Minecraft-Server in Rust.
 template: splash
 hero:
-  tagline: Ein Testing framework für Minecraft in Rust
+  tagline: Ein Testframework für Minecraft-Server in Rust
   actions:
     - text: Komm herein
       link: ./flint/introduction/
@@ -29,8 +29,8 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
   <Card title="CI/CD-Integration" icon="puzzle">
     Tests laufen automatisch bei jedem Commit.
   </Card>
-  <Card title="Vielfalt" icon="puzzle">
-    Verschiedene Versionen für die beste Anpassung an deinen Server.
+  <Card title="Mehrere Runner" icon="puzzle">
+    Nutze FlintCLI für Live-Server, flint-steel für SteelMC und FlintViz zur Inspektion.
   </Card>
   <Card title="Solide Basis" icon="laptop">
     Jedes System ist mit Blick auf die Zukunft entwickelt und gewährleistet Anpassungsfähigkeit.
@@ -42,13 +42,16 @@ import { Card, CardGrid } from '@astrojs/starlight/components';
 
 ### Für Testersteller
 <CardGrid stagger>
-  <Card title="Kein Rust wissen benötigt" icon="puzzle">
+  <Card title="Kein Rust-Wissen nötig" icon="puzzle">
     Die Tests sind rein in JSON geschrieben.
   </Card>
   <Card title="Wiederverwendbarkeit" icon="puzzle">
-    Tests funktionieren auf allen server, welche FlintCLI und flint implementiert haben.
+    Tests funktionieren auf allen Servern, die Flint unterstützen.
   </Card>
   <Card title="Lesbarkeit" icon="puzzle">
-    JSON ist selbst erklärend.
+    JSON ist selbsterklärend.
+  </Card>
+  <Card title="Visuell" icon="puzzle">
+    FlintViz macht Timelines, Assertions und Blocklayouts sichtbar.
   </Card>
 </CardGrid>

@@ -16,11 +16,7 @@ FlintBench provides:
 - **Community-driven tests** - Anyone can contribute new tests
 - **Organized test suite** - Tests categorized by game mechanic
 
-## Repository
-
-```bash
-git clone https://github.com/FlintTestMC/FlintBenchmark
-```
+Each suite keeps Flint JSON files under its own `tests/` directory.
 
 ## Test Organization
 
@@ -29,20 +25,17 @@ Tests are organized by mechanic type:
 ```
 tests/
 ├── connectible/          # Blocks that connect to neighbors
-│   ├── fence.json        # Fence connections (12 wood types)
-│   ├── wall.json         # Wall connections
+│   ├── fences/           # Fence placement and row connections
+│   ├── walls/            # Wall connections and mixed neighbors
 │   ├── iron.json         # Iron bar connections
-│   └── fences/           # Advanced fence tests
-│       ├── fence_row_connections.json
-│       └── use_item_on.json
+│   └── bars/             # Copper and iron bar behavior in the bars suite
 │
-└── fluids/               # Water and lava mechanics
-    ├── mixing.json       # Lava + water = obsidian/cobblestone
-    └── water/            # Water-specific tests
-        ├── horizontal_spread.json
-        ├── infinite_source.json
-        ├── shortest_path.json
-        └── ...
+├── fluids/               # Water and lava mechanics
+│   ├── mixing.json       # Lava + water = obsidian/cobblestone
+│   └── water/            # Water spread, sources, falling state, stability
+│
+├── portal/nether/        # Nether portal creation and destruction
+└── blocks/decoration/    # Suite-specific blocks like chain and panes
 ```
 
 ## Running FlintBench Tests
@@ -51,13 +44,13 @@ Use FlintCLI to run the test suite:
 
 ```bash
 # Run all tests
-flintmc FlintBenchmark/tests/ -s localhost:25565 -r
+flintmc FlintBenchmark/main/tests/ -s localhost:25565 -r
 
 # Run only fluid tests
-flintmc FlintBenchmark/tests/fluids/ -s localhost:25565 -r
+flintmc FlintBenchmark/main/tests/fluids/ -s localhost:25565 -r
 
 # Run tests by tag
-flintmc FlintBenchmark/tests/ -s localhost:25565 -r -t water
+flintmc FlintBenchmark/main/tests/ -s localhost:25565 -r -t water
 ```
 
 ## Contributing Tests
@@ -88,14 +81,16 @@ npm run format:check  # Verify formatting (used in CI)
 
 ## Current Test Coverage
 
-| Category | Tests | Description |
-|----------|-------|-------------|
-| Connectible | 7 | Fences, walls, iron bars |
-| Fluids | 20 | Water spread, sources, mixing |
+| Category | Coverage |
+|----------|----------|
+| Connectible | Fences, walls, bars, panes, chains, iron bars |
+| Fluids | Water spread, sources, falling state, replacement, mixing |
+| Portals | Nether portal creation and destruction |
+| Decoration blocks | Chain, panes, bars, and suite-specific block variants |
 
 See `TODO.md` in the repository for blocks still needing tests.
 
 ## Next Steps
 
-- [FlintCLI](../flintcli/) - Run tests from FlintBench
-- [Recording Tests](../recording/) - Create new tests to contribute
+- [FlintCLI](./flintcli/) - Run tests from FlintBench
+- [Recording Tests](./recording/) - Create new tests to contribute

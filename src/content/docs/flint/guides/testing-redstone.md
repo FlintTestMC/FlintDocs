@@ -43,7 +43,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:redstone_block" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
@@ -78,7 +78,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:redstone_wire", "power": 1 } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:repeater", "facing": "west", "delay": 1 } },
@@ -116,7 +116,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
         { "pos": [2, 0, 0], "block": {
@@ -163,7 +163,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 1], "block": { "id": "minecraft:redstone_wire" } },
         { "pos": [1, 0, 1], "block": { "id": "minecraft:repeater", "facing": "west" } },
@@ -197,7 +197,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 1], "block": { "id": "minecraft:redstone_block" } },
         { "pos": [1, 0, 1], "block": { "id": "minecraft:redstone_wire" } },
@@ -229,7 +229,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 1], "block": { "id": "minecraft:redstone_block" } },
         { "pos": [1, 0, 1], "block": { "id": "minecraft:redstone_wire" } },
@@ -263,7 +263,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:piston", "facing": "east" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:stone" } }
@@ -299,7 +299,7 @@ When a block is placed, neighbor updates are triggered. The order is:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:piston", "facing": "east" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:stone" } },
@@ -336,7 +336,7 @@ When a block is placed, neighbor updates are triggered. The order is:
 ## Tips for Redstone Tests
 
 1. **Be generous with timing** - Better to wait one extra tick
-2. **Use placeEach for setup** - Avoids unwanted intermediate updates
+2. **Use place_each for setup** - Avoids unwanted intermediate updates
 3. **Check wire connections** - `north`, `south`, `east`, `west` properties
 4. **Assert before and after** - Verify state before and after changes
 5. **Check exact power levels** - 0-15, not just on/off

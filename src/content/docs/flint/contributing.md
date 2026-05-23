@@ -61,7 +61,7 @@ flint-core/
 Defines the JSON test format:
 - `TestSpec` - Complete test definition
 - `Block` - Block state with properties
-- `ActionType` - All actions (place, assert, useItemOn, etc.)
+- `ActionType` - All actions (place, assert, use_item_on, etc.)
 - `PlayerSlot`, `BlockFace` - Enums for player/block interactions
 
 ### traits.rs
@@ -73,7 +73,7 @@ Core traits that servers implement:
 
 Helper types:
 - `Item` - Stackable inventory item
-- `BlockData` - Block state from world
+- `Block` - Block state returned by worlds
 - `BlockPos` - Position type alias
 
 ### runner.rs

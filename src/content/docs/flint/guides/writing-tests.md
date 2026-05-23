@@ -72,7 +72,7 @@ Use only as much space as needed.
 }
 ```
 
-### 4. Atomic Setup with placeEach
+### 4. Atomic Setup with place_each
 
 Place all initial blocks in a single tick.
 
@@ -81,7 +81,7 @@ Place all initial blocks in a single tick.
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:stone" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
@@ -124,7 +124,7 @@ Place all initial blocks in a single tick.
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:redstone_lamp" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
@@ -198,7 +198,7 @@ Check state before and after an action.
       { "pos": [0,0,0], "is": {"id": "minecraft:copper_block"} }
     ]},
 
-    { "at": 1, "do": "useItemOn", "pos": [0,0,0], "face": "top", "item": "minecraft:honeycomb" },
+    { "at": 1, "do": "use_item_on", "pos": [0,0,0], "face": "top", "item": "minecraft:honeycomb" },
 
     { "at": 2, "do": "assert", "checks": [
       { "pos": [0,0,0], "is": {"id": "minecraft:waxed_copper_block"} }
@@ -228,7 +228,7 @@ For tests that verify stability:
 ```json
 {
   "timeline": [
-    { "at": 0, "do": "placeEach", "blocks": [...] },
+    { "at": 0, "do": "place_each", "blocks": [...] },
     { "at": 1, "do": "place", "pos": [0,0,0], "block": {"id": "minecraft:redstone_block"} },
     { "at": 2, "do": "assert", "checks": [...] }
   ]
@@ -244,7 +244,7 @@ Sand/gravel need time to fall:
 ```json
 {
   "timeline": [
-    { "at": 0, "do": "placeEach", "blocks": [
+    { "at": 0, "do": "place_each", "blocks": [
       { "pos": [0, 1, 0], "block": { "id": "minecraft:sand" } },
       { "pos": [0, 0, 0], "block": { "id": "minecraft:stone" } }
     ]},
@@ -263,7 +263,7 @@ Observers have 2 game-tick delay:
 ```json
 {
   "timeline": [
-    { "at": 0, "do": "placeEach", "blocks": [
+    { "at": 0, "do": "place_each", "blocks": [
       { "pos": [0, 0, 0], "block": { "id": "minecraft:observer", "facing": "east" } },
       { "pos": [1, 0, 0], "block": { "id": "minecraft:observer", "facing": "east" } }
     ]},

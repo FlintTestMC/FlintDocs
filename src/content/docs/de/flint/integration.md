@@ -52,7 +52,7 @@ impl FlintWorld for MeineTestWelt {
 
     fn current_tick(&self) -> u64 { self.tick }
 
-    fn get_block(&self, pos: BlockPos) -> BlockData {
+    fn get_block(&self, pos: BlockPos) -> Block {
         // Block-State zurückgeben
     }
 
@@ -73,10 +73,11 @@ impl FlintWorld for MeineTestWelt {
 ```rust
 impl FlintPlayer for MeinTestSpieler {
     fn set_slot(&mut self, slot: PlayerSlot, item: Option<&Item>) { ... }
-    fn get_slot(&self, slot: PlayerSlot) -> Option<Item> { ... }
+    fn get_slot(&self, slot: PlayerSlot, requested_data: Vec<String>) -> Option<Item> { ... }
     fn select_hotbar(&mut self, slot: u8) { ... }
     fn selected_hotbar(&self) -> u8 { ... }
     fn use_item_on(&mut self, pos: BlockPos, face: &BlockFace) { ... }
+    fn set_game_mode(&mut self, mode: GameMode) { ... }
 }
 ```
 
@@ -84,14 +85,11 @@ impl FlintPlayer for MeinTestSpieler {
 
 ```rust
 let adapter = MeinServerAdapter;
-let runner = TestRunner::new(&adapter);
+let runner = TestRunner::new(Arc::new(adapter));
 
 let loader = TestLoader::new(Path::new("./tests"), true)?;
 let files = loader.collect_all_test_files()?;
-
-let specs: Vec<TestSpec> = files.iter()
-    .filter_map(|f| TestSpec::from_file(f).ok())
-    .collect();
+let specs = loader.load_specs(&files, true)?;
 
 let summary = runner.run_tests(&specs);
 summary.print_concise_summary();

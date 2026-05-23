@@ -31,14 +31,14 @@ Places a single block.
 | `pos` | [x, y, z] | Block position |
 | `block` | object | Block with ID and properties |
 
-### placeEach
+### place_each
 
 Places multiple blocks atomically in the same tick. Ideal for setup phases.
 
 ```json
 {
   "at": 0,
-  "do": "placeEach",
+  "do": "place_each",
   "blocks": [
     { "pos": [0, 0, 0], "block": { "id": "minecraft:stone" } },
     { "pos": [1, 0, 0], "block": { "id": "minecraft:dirt" } },
@@ -53,7 +53,7 @@ Places multiple blocks atomically in the same tick. Ideal for setup phases.
 | `blocks[].pos` | [x, y, z] | Position |
 | `blocks[].block` | object | Block definition |
 
-**When to use placeEach:**
+**When to use place_each:**
 - Initial block placement at tick 0
 - When multiple blocks must exist simultaneously
 - For atomic operations (all or nothing)
@@ -96,7 +96,7 @@ Removes a block (replaces with air).
 
 ## Player Actions
 
-### useItemOn
+### use_item_on
 
 Uses an item on a block face. This triggers the server's interaction logic.
 
@@ -105,7 +105,7 @@ Uses an item on a block face. This triggers the server's interaction logic.
 ```json
 {
   "at": 5,
-  "do": "useItemOn",
+  "do": "use_item_on",
   "pos": [3, 1, 3],
   "face": "top",
   "item": "minecraft:honeycomb"
@@ -117,7 +117,7 @@ Uses an item on a block face. This triggers the server's interaction logic.
 ```json
 {
   "at": 5,
-  "do": "useItemOn",
+  "do": "use_item_on",
   "pos": [3, 1, 3],
   "face": "north"
 }
@@ -140,14 +140,14 @@ Uses an item on a block face. This triggers the server's interaction logic.
 | `east` | +X |
 | `west` | -X |
 
-### setSlot
+### set_slot
 
 Sets an item in a player slot.
 
 ```json
 {
   "at": 3,
-  "do": "setSlot",
+  "do": "set_slot",
   "slot": "hotbar1",
   "item": "minecraft:diamond_pickaxe",
   "count": 1
@@ -159,7 +159,7 @@ To clear a slot:
 ```json
 {
   "at": 3,
-  "do": "setSlot",
+  "do": "set_slot",
   "slot": "hotbar1"
 }
 ```
@@ -170,14 +170,14 @@ To clear a slot:
 | `item` | string | No | Item ID (empty = clear slot) |
 | `count` | number | No | Amount (default: 1) |
 
-### selectHotbar
+### select_hotbar
 
 Selects a hotbar slot (1-9).
 
 ```json
 {
   "at": 4,
-  "do": "selectHotbar",
+  "do": "select_hotbar",
   "slot": 2
 }
 ```
@@ -190,7 +190,7 @@ Selects a hotbar slot (1-9).
 
 ### assert
 
-Verifies block states at specified positions.
+Verifies block states and inventory slots.
 
 ```json
 {
@@ -216,14 +216,48 @@ Verifies block states at specified positions.
 | Field | Type | Description |
 |-------|------|-------------|
 | `checks` | array | List of checks |
-| `checks[].pos` | [x, y, z] | Position |
-| `checks[].is` | object | Expected block |
+| `checks[].pos` | [x, y, z] | Position for block checks |
+| `checks[].slot` | string | Slot for inventory checks |
+| `checks[].is` | object, array, or `"empty"` | Expected block or item |
 
 **Behavior:**
 - Block ID is checked (with or without `minecraft:` prefix)
 - Only specified properties are checked
 - Unspecified properties are ignored
 - On failure, the test stops immediately
+
+`is` may also be an array of accepted blocks:
+
+```json
+{
+  "pos": [0, 0, 0],
+  "is": [
+    { "id": "minecraft:air" },
+    { "id": "minecraft:water" }
+  ]
+}
+```
+
+Inventory checks use `slot` instead of `pos`. Use `"empty"` or omit `is` to assert an empty slot.
+
+```json
+{
+  "at": 3,
+  "do": "assert",
+  "checks": [
+    {
+      "slot": "hotbar1",
+      "is": { "id": "minecraft:honeycomb", "count": 63 }
+    },
+    {
+      "slot": "off_hand",
+      "is": "empty"
+    }
+  ]
+}
+```
+
+There is no separate `assert_state` action in the current schema. To check changing state over time, schedule normal `assert` actions at multiple ticks.
 
 ## Timing Examples
 

@@ -45,7 +45,7 @@ Der Testname sollte das erwartete Verhalten beschreiben.
 
 Verwende nur so viel Platz wie nötig.
 
-### 4. Atomares Setup mit placeEach
+### 4. Atomares Setup mit place_each
 
 Platziere alle initialen Blöcke in einem Tick.
 
@@ -54,7 +54,7 @@ Platziere alle initialen Blöcke in einem Tick.
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:stone" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } }

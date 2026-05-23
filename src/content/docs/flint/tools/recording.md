@@ -28,18 +28,19 @@ flintmc -s localhost:25565 -i
 Once recording starts:
 
 1. **Place blocks** - All block changes are captured with their tick timing
-2. **Advance ticks** - Use `!tick` or `!tick <count>` to step forward
-3. **Add assertions** - Use `!assert` to verify current block states
+2. **Advance ticks** - Use `!tick` or `!next` to snapshot changes and step forward
+3. **Add assertions** - Use `!assert <x> <y> <z>` to capture the current block at a world position
 4. **Save the test** - Use `!save` when done
 
 ## Recording Commands
 
 | Command | Description |
 |---------|-------------|
-| `!tick` | Advance one game tick |
-| `!tick <n>` | Advance n game ticks |
-| `!assert` | Assert all changes since last assert |
-| `!assert_changes` | Assert only blocks that changed |
+| `!record <name> [player]` | Start recording; optional player controls scan center |
+| `!tick` / `!next` | Snapshot changes, step one game tick, and advance recording time |
+| `!assert <x> <y> <z>` | Assert the block currently at the given world coordinates |
+| `!assert_changes` | Convert detected changes in the current recording tick into assertions |
+| `!sprint <ticks>` | Repeat tick/assert using the last asserted position |
 | `!save` | Save and finish recording |
 | `!cancel` | Discard recording |
 
@@ -59,8 +60,8 @@ Bot: Tick 1
 Player: !tick
 Bot: Tick 2
 
-Player: !assert
-Bot: Added 2 assertions at tick 2
+Player: !assert 0 100 0
+Bot: Added assert at [0, 100, 0] = minecraft:oak_fence[east=true]
 
 Player: !save
 Bot: Test saved to fence_test.json
@@ -72,8 +73,8 @@ Recording generates a complete test file:
 
 ```json
 {
-  "flintVersion": "0.1",
   "name": "fence_test",
+  "tags": ["recorded"],
   "setup": {
     "cleanup": {
       "region": [[-5, 95, -5], [5, 105, 5]]
@@ -96,7 +97,7 @@ Recording generates a complete test file:
       "at": 2,
       "do": "assert",
       "checks": [
-        { "pos": [0, 100, 0], "is": { "id": "minecraft:oak_fence", "state": { "east": "true" } } },
+        { "pos": [0, 100, 0], "is": { "id": "minecraft:oak_fence", "east": "true" } },
         { "pos": [1, 100, 0], "is": { "id": "minecraft:stone" } }
       ]
     }
@@ -118,8 +119,9 @@ The recording automatically calculates a cleanup region that encompasses all pla
 
 ### Assertions
 
-- `!assert` captures the complete state of all placed blocks
-- `!assert_changes` only captures blocks that changed since the last assertion
+- `!assert <x> <y> <z>` captures the block at one position
+- `!assert_changes` changes all placements/removals detected in the current tick into assertions
+- `!sprint <ticks>` is useful for repeated timing checks after setting an initial assertion position
 - You can add multiple assertions at different tick points
 
 ### Editing Generated Tests
@@ -133,7 +135,7 @@ Recording creates a good starting point, but you may want to:
 
 ## Contributing to FlintBench
 
-Tests that validate vanilla Minecraft behavior should be contributed to [FlintBench](../flintbench/), the official test collection. After recording a test:
+Tests that validate vanilla Minecraft behavior should be contributed to [FlintBench](./flintbench/), the official test collection. After recording a test:
 
 1. Fork the FlintBenchmark repository
 2. Place your test in the appropriate category folder
@@ -142,6 +144,6 @@ Tests that validate vanilla Minecraft behavior should be contributed to [FlintBe
 
 ## Next Steps
 
-- [FlintBench](../flintbench/) - Contribute your tests to the official collection
-- [FlintCLI Reference](../flintcli/) - Complete command reference
+- [FlintBench](./flintbench/) - Contribute your tests to the official collection
+- [FlintCLI Reference](./flintcli/) - Complete command reference
 - [Test Format](../../testformat/overview/) - Understand the generated JSON format

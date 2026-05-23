@@ -64,7 +64,7 @@ Ein etwas komplexerer Test, der Redstone-Signalübertragung prüft:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:redstone_block" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
@@ -91,7 +91,7 @@ Ein etwas komplexerer Test, der Redstone-Signalübertragung prüft:
 
 ### Wichtige Konzepte
 
-- **placeEach** - Platziert mehrere Blöcke atomar im selben Tick
+- **place_each** - Platziert mehrere Blöcke atomar im selben Tick
 - **Block-Properties** - Mit `"power": 15` prüfen wir den Redstone-Signalpegel
 - **Mehrere Checks** - Eine Assertion kann mehrere Positionen prüfen
 
@@ -117,7 +117,7 @@ Test mit Spieler-Aktionen (z.B. Wachsen von Kupfer):
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:honeycomb"
@@ -140,7 +140,7 @@ Test mit Spieler-Aktionen (z.B. Wachsen von Kupfer):
 
 **Simple Mode** (wie oben):
 ```json
-{ "do": "useItemOn", "pos": [0,0,0], "face": "top", "item": "minecraft:honeycomb" }
+{ "do": "use_item_on", "pos": [0,0,0], "face": "top", "item": "minecraft:honeycomb" }
 ```
 Das Item wird direkt angegeben - Flint setzt es automatisch ins Inventar.
 
@@ -151,13 +151,13 @@ Das Item wird direkt angegeben - Flint setzt es automatisch ins Inventar.
     "cleanup": { "region": [[0,0,0], [1,1,1]] },
     "player": {
       "inventory": {
-        "hotbar1": { "item": "minecraft:honeycomb", "count": 64 }
+        "hotbar1": { "id": "minecraft:honeycomb", "count": 64 }
       },
-      "selectedHotbar": 1
+      "selected_hotbar": 1
     }
   },
   "timeline": [
-    { "at": 1, "do": "useItemOn", "pos": [0,0,0], "face": "top" }
+    { "at": 1, "do": "use_item_on", "pos": [0,0,0], "face": "top" }
   ]
 }
 ```

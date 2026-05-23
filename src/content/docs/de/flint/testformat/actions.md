@@ -26,14 +26,14 @@ Platziert einen einzelnen Block.
 }
 ```
 
-### placeEach
+### place_each
 
 Platziert mehrere Blöcke atomar im selben Tick.
 
 ```json
 {
   "at": 0,
-  "do": "placeEach",
+  "do": "place_each",
   "blocks": [
     { "pos": [0, 0, 0], "block": { "id": "minecraft:stone" } },
     { "pos": [1, 0, 0], "block": { "id": "minecraft:dirt" } }
@@ -68,14 +68,14 @@ Entfernt einen Block (ersetzt mit Luft).
 
 ## Spieler-Aktionen
 
-### useItemOn
+### use_item_on
 
 Benutzt ein Item auf einer Block-Seite.
 
 ```json
 {
   "at": 5,
-  "do": "useItemOn",
+  "do": "use_item_on",
   "pos": [3, 1, 3],
   "face": "top",
   "item": "minecraft:honeycomb"
@@ -84,28 +84,28 @@ Benutzt ein Item auf einer Block-Seite.
 
 **Block-Seiten:** `top`, `bottom`, `north`, `south`, `east`, `west`
 
-### setSlot
+### set_slot
 
 Setzt ein Item in einen Spieler-Slot.
 
 ```json
 {
   "at": 3,
-  "do": "setSlot",
+  "do": "set_slot",
   "slot": "hotbar1",
   "item": "minecraft:diamond_pickaxe",
   "count": 1
 }
 ```
 
-### selectHotbar
+### select_hotbar
 
 Wählt einen Hotbar-Slot aus (1-9).
 
 ```json
 {
   "at": 4,
-  "do": "selectHotbar",
+  "do": "select_hotbar",
   "slot": 2
 }
 ```
@@ -114,7 +114,7 @@ Wählt einen Hotbar-Slot aus (1-9).
 
 ### assert
 
-Prüft Block-Zustände an angegebenen Positionen.
+Prüft Block-Zustände und Inventar-Slots.
 
 ```json
 {
@@ -131,6 +131,39 @@ Prüft Block-Zustände an angegebenen Positionen.
   ]
 }
 ```
+
+`is` kann auch mehrere erlaubte Blöcke enthalten:
+
+```json
+{
+  "pos": [0, 0, 0],
+  "is": [
+    { "id": "minecraft:air" },
+    { "id": "minecraft:water" }
+  ]
+}
+```
+
+Inventarprüfungen verwenden `slot` statt `pos`. Mit `"empty"` oder ohne `is` wird ein leerer Slot erwartet.
+
+```json
+{
+  "at": 3,
+  "do": "assert",
+  "checks": [
+    {
+      "slot": "hotbar1",
+      "is": { "id": "minecraft:honeycomb", "count": 63 }
+    },
+    {
+      "slot": "off_hand",
+      "is": "empty"
+    }
+  ]
+}
+```
+
+Es gibt im aktuellen Schema keine separate `assert_state`-Aktion. Prüfe wechselnde Properties mit normalen `assert`-Aktionen an mehreren Ticks.
 
 ## Timing für Redstone
 

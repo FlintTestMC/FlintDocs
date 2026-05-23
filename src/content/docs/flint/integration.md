@@ -6,7 +6,7 @@ sidebar:
 ---
 
 This guide explains how to integrate Flint into your Minecraft server implementation.
-The used environment variables can be found [here](../../ENV)
+Environment variables used by the built-in tools are listed in [Environment Variables](../env/).
 
 ## Overview
 
@@ -71,9 +71,7 @@ impl FlintAdapter for MyServerAdapter {
 The world trait provides block operations and tick execution.
 
 ```rust
-use flint_core::{FlintWorld, FlintPlayer, Block, BlockPos};
-use flint_core::traits::BlockData;
-use rustc_hash::FxHashMap;
+use flint_core::{Block, BlockPos, FlintPlayer, FlintWorld};
 
 pub struct MyTestWorld {
     tick: u64,
@@ -96,10 +94,10 @@ impl FlintWorld for MyTestWorld {
         self.tick
     }
 
-    fn get_block(&self, pos: BlockPos) -> BlockData {
+    fn get_block(&self, pos: BlockPos) -> Block {
         let state = self.blocks.get(&pos).unwrap_or(&BlockState::AIR);
 
-        BlockData {
+        Block {
             id: state.block_id().to_string(),
             properties: state.properties_as_map(),
         }
@@ -166,8 +164,8 @@ fn do_tick(&mut self) {
 The player trait manages inventory and item interactions.
 
 ```rust
-use flint_core::{FlintPlayer, Item, BlockPos};
-use flint_core::test_spec::{PlayerSlot, BlockFace};
+use flint_core::{BlockPos, FlintPlayer, Item};
+use flint_core::test_spec::{BlockFace, GameMode, PlayerSlot};
 
 pub struct MyTestPlayer {
     inventory: [Option<ItemStack>; 41],
@@ -181,11 +179,12 @@ impl FlintPlayer for MyTestPlayer {
         self.inventory[index] = item.map(|i| ItemStack::from_flint(i));
     }
 
-    fn get_slot(&self, slot: PlayerSlot) -> Option<Item> {
+    fn get_slot(&self, slot: PlayerSlot, requested_data: Vec<String>) -> Option<Item> {
         let index = slot_to_index(slot);
         self.inventory[index].as_ref().map(|stack| Item {
             id: stack.item_id().to_string(),
             count: stack.count(),
+            data: stack.only_requested_data(requested_data),
         })
     }
 
@@ -214,6 +213,10 @@ impl FlintPlayer for MyTestPlayer {
             self.interact_empty_hand(world, pos, face, &target_block);
         }
     }
+
+    fn set_game_mode(&mut self, mode: GameMode) {
+        self.game_mode = mode;
+    }
 }
 
 fn slot_to_index(slot: PlayerSlot) -> usize {
@@ -237,13 +240,14 @@ fn slot_to_index(slot: PlayerSlot) -> usize {
 
 ```rust
 use flint_core::{TestRunner, TestSpec};
-use std::path::Path;
+use std::{path::PathBuf, sync::Arc};
 
 fn run_single_test() {
     let adapter = MyServerAdapter::new();
-    let runner = TestRunner::new(&adapter);
+    let runner = TestRunner::new(Arc::new(adapter));
 
-    let spec = TestSpec::from_file(&Path::new("tests/my-test.json")).unwrap();
+    let path = PathBuf::from("tests/my-test.json");
+    let spec = TestSpec::from_file(&path, true).unwrap();
     let result = runner.run_test(&spec);
 
     if result.success {
@@ -258,18 +262,15 @@ fn run_single_test() {
 
 ```rust
 use flint_core::TestLoader;
+use std::{path::Path, sync::Arc};
 
 fn run_all_tests() {
     let adapter = MyServerAdapter::new();
-    let runner = TestRunner::new(&adapter);
+    let runner = TestRunner::new(Arc::new(adapter));
 
     let loader = TestLoader::new(Path::new("./tests"), true).unwrap();
     let test_files = loader.collect_all_test_files().unwrap();
-
-    let specs: Vec<TestSpec> = test_files
-        .iter()
-        .filter_map(|f| TestSpec::from_file(f).ok())
-        .collect();
+    let specs = loader.load_specs(&test_files, true).unwrap();
 
     let summary = runner.run_tests(&specs);
     summary.print_concise_summary();
@@ -304,13 +305,10 @@ summary.print_junit();   // JUnit XML
 
 ```rust
 use flint_core::{
-    FlintAdapter, FlintWorld, FlintPlayer,
-    TestRunner, TestSpec, TestLoader,
-    Block, Item, ServerInfo,
-    traits::BlockData,
-    test_spec::{PlayerSlot, BlockFace},
+    Block, FlintAdapter, FlintPlayer, FlintWorld, Item, ServerInfo, TestLoader, TestRunner,
+    test_spec::{BlockFace, GameMode, PlayerSlot},
 };
-use std::path::Path;
+use std::{path::Path, sync::Arc};
 
 struct SteelAdapter;
 
@@ -326,7 +324,7 @@ impl FlintAdapter for SteelAdapter {
 
 fn main() {
     let adapter = SteelAdapter;
-    let runner = TestRunner::new(&adapter);
+    let runner = TestRunner::new(Arc::new(adapter));
 
     let loader = TestLoader::new(Path::new("./tests"), true)
         .expect("Failed to load tests");
@@ -334,13 +332,8 @@ fn main() {
     let files = loader.collect_all_test_files()
         .expect("Failed to collect test files");
 
-    let specs: Vec<TestSpec> = files.iter()
-        .filter_map(|f| {
-            TestSpec::from_file(f)
-                .map_err(|e| eprintln!("Parse error {}: {}", f.display(), e))
-                .ok()
-        })
-        .collect();
+    let specs = loader.load_specs(&files, true)
+        .expect("Failed to parse tests");
 
     println!("Running {} tests...\n", specs.len());
 

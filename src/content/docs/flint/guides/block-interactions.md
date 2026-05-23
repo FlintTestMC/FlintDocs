@@ -1,6 +1,6 @@
 ---
 title: Testing Block Interactions
-description: Tests for player-block interactions with useItemOn
+description: Tests for player-block interactions with use_item_on
 sidebar:
   order: 3
 ---
@@ -9,7 +9,7 @@ This guide shows how to test player interactions with blocks.
 
 ## Basics
 
-The `useItemOn` action simulates a player using an item on a block. This tests the actual server interaction logic.
+The `use_item_on` action simulates a player using an item on a block. This tests the actual server interaction logic.
 
 ## Simple Mode vs. Advanced Mode
 
@@ -20,7 +20,7 @@ The item is specified directly in the action:
 ```json
 {
   "at": 1,
-  "do": "useItemOn",
+  "do": "use_item_on",
   "pos": [0, 0, 0],
   "face": "top",
   "item": "minecraft:honeycomb"
@@ -42,14 +42,14 @@ Player inventory is configured in setup:
     "cleanup": { "region": [[0, 0, 0], [2, 2, 2]] },
     "player": {
       "inventory": {
-        "hotbar1": { "item": "minecraft:honeycomb", "count": 64 },
-        "hotbar2": { "item": "minecraft:diamond_axe", "count": 1 }
+        "hotbar1": { "id": "minecraft:honeycomb", "count": 64 },
+        "hotbar2": { "id": "minecraft:diamond_axe", "count": 1 }
       },
-      "selectedHotbar": 1
+      "selected_hotbar": 1
     }
   },
   "timeline": [
-    { "at": 1, "do": "useItemOn", "pos": [0, 0, 0], "face": "top" }
+    { "at": 1, "do": "use_item_on", "pos": [0, 0, 0], "face": "top" }
   ]
 }
 ```
@@ -107,7 +107,7 @@ west│           │east
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:honeycomb"
@@ -141,7 +141,7 @@ west│           │east
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:diamond_axe"
@@ -175,7 +175,7 @@ west│           │east
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:diamond_shovel"
@@ -209,7 +209,7 @@ west│           │east
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:diamond_hoe"
@@ -236,16 +236,16 @@ west│           │east
     "cleanup": { "region": [[0, 0, 0], [2, 1, 1]] },
     "player": {
       "inventory": {
-        "hotbar1": { "item": "minecraft:honeycomb", "count": 1 },
-        "hotbar2": { "item": "minecraft:diamond_axe", "count": 1 }
+        "hotbar1": { "id": "minecraft:honeycomb", "count": 1 },
+        "hotbar2": { "id": "minecraft:diamond_axe", "count": 1 }
       },
-      "selectedHotbar": 1
+      "selected_hotbar": 1
     }
   },
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:copper_block" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:oak_log" } }
@@ -253,18 +253,18 @@ west│           │east
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top"
     },
     {
       "at": 2,
-      "do": "selectHotbar",
+      "do": "select_hotbar",
       "slot": 2
     },
     {
       "at": 3,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [1, 0, 0],
       "face": "top"
     },
@@ -285,7 +285,7 @@ west│           │east
 ```json
 {
   "at": 5,
-  "do": "setSlot",
+  "do": "set_slot",
   "slot": "hotbar1",
   "item": "minecraft:water_bucket",
   "count": 1
@@ -297,7 +297,7 @@ west│           │east
 ```json
 {
   "at": 10,
-  "do": "setSlot",
+  "do": "set_slot",
   "slot": "hotbar1"
 }
 ```
@@ -324,7 +324,7 @@ Wax must be removed before oxidation can be scraped:
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:diamond_axe"
@@ -338,7 +338,7 @@ Wax must be removed before oxidation can be scraped:
     },
     {
       "at": 3,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:diamond_axe"

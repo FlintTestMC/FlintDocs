@@ -47,17 +47,17 @@ export default defineConfig({
         {
           label: "Test Format",
           translations: { de: "Testformat" },
-          autogenerate: { directory: "flint/testformat" },
+          items: [{ autogenerate: { directory: "flint/testformat" } }],
         },
         {
           label: "Guides",
           translations: { de: "Anleitungen" },
-          autogenerate: { directory: "flint/guides" },
+          items: [{ autogenerate: { directory: "flint/guides" } }],
         },
         {
           label: "Tools",
           translations: { de: "Werkzeuge" },
-          autogenerate: { directory: "flint/tools" },
+          items: [{ autogenerate: { directory: "flint/tools" } }],
         },
         {
           label: "Advanced",

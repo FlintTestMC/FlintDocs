@@ -18,9 +18,17 @@ FlintBench bietet:
 
 ## Repository
 
-```bash
-git clone https://github.com/FlintTestMC/FlintBenchmark
-```
+Der lokale Flint-Workspace teilt die Benchmark-Suite aktuell in mehrere Szenario-Suites auf:
+
+| Suite | Tests |
+|-------|------:|
+| `main` | 47 |
+| `bars` | 54 |
+| `chain` | 54 |
+| `panes` | 47 |
+| `walls` | 48 |
+
+Jede Suite legt Flint-JSON-Dateien in ihrem eigenen `tests/`-Ordner ab.
 
 ## Test-Organisation
 
@@ -29,20 +37,17 @@ Tests sind nach Mechanik-Typ organisiert:
 ```
 tests/
 ├── connectible/          # Blöcke, die sich mit Nachbarn verbinden
-│   ├── fence.json        # Zaun-Verbindungen (12 Holzarten)
-│   ├── wall.json         # Mauer-Verbindungen
+│   ├── fences/           # Zaun-Platzierung und Reihenverbindungen
+│   ├── walls/            # Mauer-Verbindungen und gemischte Nachbarn
 │   ├── iron.json         # Eisengitter-Verbindungen
-│   └── fences/           # Erweiterte Zaun-Tests
-│       ├── fence_row_connections.json
-│       └── use_item_on.json
+│   └── bars/             # Kupfer- und Eisenbar-Verhalten in der bars-Suite
 │
-└── fluids/               # Wasser- und Lava-Mechaniken
-    ├── mixing.json       # Lava + Wasser = Obsidian/Bruchstein
-    └── water/            # Wasser-spezifische Tests
-        ├── horizontal_spread.json
-        ├── infinite_source.json
-        ├── shortest_path.json
-        └── ...
+├── fluids/               # Wasser- und Lava-Mechaniken
+│   ├── mixing.json       # Lava + Wasser = Obsidian/Bruchstein
+│   └── water/            # Wasser-Ausbreitung, Quellen, Falling-State, Stabilität
+│
+├── portal/nether/        # Netherportal-Erstellung und -Zerstörung
+└── blocks/decoration/    # Suite-spezifische Blöcke wie Chain und Panes
 ```
 
 ## FlintBench-Tests ausführen
@@ -51,18 +56,18 @@ Benutze FlintCLI, um die Test-Suite auszuführen:
 
 ```bash
 # Alle Tests ausführen
-flintmc FlintBenchmark/tests/ -s localhost:25565 -r
+flintmc FlintBenchmark/main/tests/ -s localhost:25565 -r
 
 # Nur Fluid-Tests ausführen
-flintmc FlintBenchmark/tests/fluids/ -s localhost:25565 -r
+flintmc FlintBenchmark/main/tests/fluids/ -s localhost:25565 -r
 
 # Tests nach Tag ausführen
-flintmc FlintBenchmark/tests/ -s localhost:25565 -r -t water
+flintmc FlintBenchmark/main/tests/ -s localhost:25565 -r -t water
 ```
 
 ## Tests beitragen
 
-Wenn du Tests mit [FlintCLI-Aufnahme](../recording/) erstellst, trage sie zu FlintBench bei:
+Wenn du Tests mit [FlintCLI-Aufnahme](./recording/) erstellst, trage sie zu FlintBench bei:
 
 1. Forke das FlintBenchmark-Repository
 2. Füge deinen Test zum passenden Kategorie-Ordner hinzu
@@ -88,14 +93,16 @@ npm run format:check  # Formatierung überprüfen (wird in CI verwendet)
 
 ## Aktuelle Test-Abdeckung
 
-| Kategorie | Tests | Beschreibung |
-|-----------|-------|--------------|
-| Connectible | 7 | Zäune, Mauern, Eisengitter |
-| Fluids | 20 | Wasser-Ausbreitung, Quellen, Mischung |
+| Kategorie | Abdeckung |
+|-----------|-----------|
+| Connectible | Zäune, Mauern, Bars, Panes, Chains, Eisengitter |
+| Fluids | Wasser-Ausbreitung, Quellen, Falling-State, Replacement, Mixing |
+| Portale | Netherportal-Erstellung und -Zerstörung |
+| Dekorationsblöcke | Chain, Panes, Bars und suite-spezifische Varianten |
 
 Siehe `TODO.md` im Repository für Blöcke, die noch Tests benötigen.
 
 ## Nächste Schritte
 
-- [FlintCLI](../flintcli/) - Tests aus FlintBench ausführen
-- [Tests aufnehmen](../recording/) - Neue Tests zum Beitragen erstellen
+- [FlintCLI](./flintcli/) - Tests aus FlintBench ausführen
+- [Tests aufnehmen](./recording/) - Neue Tests zum Beitragen erstellen

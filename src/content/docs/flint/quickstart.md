@@ -64,7 +64,7 @@ A slightly more complex test that checks redstone signal transmission:
   "timeline": [
     {
       "at": 0,
-      "do": "placeEach",
+      "do": "place_each",
       "blocks": [
         { "pos": [0, 0, 0], "block": { "id": "minecraft:redstone_block" } },
         { "pos": [1, 0, 0], "block": { "id": "minecraft:redstone_wire" } },
@@ -91,7 +91,7 @@ A slightly more complex test that checks redstone signal transmission:
 
 ### Key Concepts
 
-- **placeEach** - Places multiple blocks atomically in the same tick
+- **place_each** - Places multiple blocks atomically in the same tick
 - **Block properties** - With `"power": 15` we check the redstone signal level
 - **Multiple checks** - One assertion can verify multiple positions
 
@@ -117,7 +117,7 @@ Test with player actions (e.g., waxing copper):
     },
     {
       "at": 1,
-      "do": "useItemOn",
+      "do": "use_item_on",
       "pos": [0, 0, 0],
       "face": "top",
       "item": "minecraft:honeycomb"
@@ -140,7 +140,7 @@ Test with player actions (e.g., waxing copper):
 
 **Simple Mode** (as shown above):
 ```json
-{ "do": "useItemOn", "pos": [0,0,0], "face": "top", "item": "minecraft:honeycomb" }
+{ "do": "use_item_on", "pos": [0,0,0], "face": "top", "item": "minecraft:honeycomb" }
 ```
 The item is specified directly - Flint automatically sets it in the inventory.
 
@@ -151,13 +151,13 @@ The item is specified directly - Flint automatically sets it in the inventory.
     "cleanup": { "region": [[0,0,0], [1,1,1]] },
     "player": {
       "inventory": {
-        "hotbar1": { "item": "minecraft:honeycomb", "count": 64 }
+        "hotbar1": { "id": "minecraft:honeycomb", "count": 64 }
       },
-      "selectedHotbar": 1
+      "selected_hotbar": 1
     }
   },
   "timeline": [
-    { "at": 1, "do": "useItemOn", "pos": [0,0,0], "face": "top" }
+    { "at": 1, "do": "use_item_on", "pos": [0,0,0], "face": "top" }
   ]
 }
 ```

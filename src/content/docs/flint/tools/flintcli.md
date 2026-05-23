@@ -15,6 +15,8 @@ FlintCLI is a command-line tool that connects to Minecraft servers to execute Fl
 - **Interactive mode** - Run tests via in-game chat commands
 - **Test recording** - Record tests by playing in-game
 - **Debugging** - Breakpoints and step-through execution
+- **Shell completions** - Generate completions for supported shells
+- **Event stream output** - Emit per-tick JSONL diffs for visualization tools
 
 ## Installation
 
@@ -101,6 +103,12 @@ flintmc tests/ --dry-run
 
 # Pause after setup for inspection
 flintmc tests/ -s localhost:25565 --break-after-setup
+
+# Generate shell completions
+flintmc --completions zsh > _flintmc
+
+# Emit per-tick JSONL events for one test
+flintmc tests/basic.json -s localhost:25565 --emit-events run.jsonl
 ```
 
 ## Command-Line Options
@@ -119,6 +127,8 @@ flintmc tests/ -s localhost:25565 --break-after-setup
 | `--list` | | List tests and exit |
 | `--dry-run` | | Show plan without connecting |
 | `--format <FORMAT>` | | Output: pretty, json, tap, junit |
+| `--completions <SHELL>` | | Generate shell completions and exit |
+| `--emit-events <PATH>` | | Write per-tick JSONL events; requires exactly one test file |
 
 ## Interactive Mode
 
@@ -138,11 +148,29 @@ All commands are prefixed with `!`:
 | `!list` | List loaded tests |
 | `!search <pattern>` | Search tests by name |
 | `!run <name>` | Run a specific test |
+| `!run <name> step` | Run a test and pause after every tick |
 | `!run-all` | Run all tests |
 | `!run-tags <tag1,tag2>` | Run tests by tags |
 | `!reload` | Reload tests from disk |
 | `!record <name>` | Start recording a test |
+| `!tick` / `!next` | During recording, snapshot changes and advance one tick |
+| `!assert <x> <y> <z>` | During recording, add a block assertion |
+| `!assert_changes` | Convert current recorded block changes into assertions |
+| `!sprint <ticks>` | During recording, tick repeatedly and re-assert the last assertion |
+| `!save` | Save the current recording |
+| `!cancel` | Discard the current recording |
 | `!stop` | Exit interactive mode |
+
+## Event JSONL
+
+`--emit-events` is intended for tools that want to replay a real server run. It forces single-step execution, scans the test cleanup region after every tick, and writes newline-delimited events in test-local coordinates:
+
+```json
+{"type":"run_started","test":"basic","region":[[0,0,0],[2,2,2]]}
+{"type":"tick","tick":1,"set":[{"pos":[0,0,0],"id":"minecraft:stone"}],"removed":[]}
+{"type":"assert","tick":2,"pos":[0,0,0],"passed":true,"expected":"minecraft:stone","actual":"minecraft:stone"}
+{"type":"run_completed","asserts_passed":1,"asserts_failed":0}
+```
 
 ## Troubleshooting
 
@@ -160,5 +188,5 @@ Verify firewall settings and whitelist configuration.
 
 ## Next Steps
 
-- [Recording Tests](../recording/) - Create tests by playing in-game
+- [Recording Tests](./recording/) - Create tests by playing in-game
 - [Test Format](../../testformat/overview/) - Complete test specification reference

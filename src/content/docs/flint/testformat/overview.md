@@ -11,10 +11,11 @@ Flint tests are JSON files with a defined structure. This page explains the basi
 
 ```json
 {
-  "flintVersion": "0.1.0",
+  "flintVersion": "1.0.0",
   "name": "Test Name",
   "description": "Optional description",
   "tags": ["unit", "redstone"],
+  "minecraftIds": ["minecraft:lever"],
   "dependencies": [],
   "setup": {
     "cleanup": {
@@ -44,8 +45,11 @@ Flint tests are JSON files with a defined structure. This page explains the basi
 | `flintVersion` | string | - | Flint version for compatibility |
 | `description` | string | - | Detailed description |
 | `tags` | string[] | `["default"]` | Tags for filtering |
+| `minecraftIds` | string[] | `[]` | Minecraft block or item IDs covered by the test |
 | `dependencies` | string[] | `[]` | Tests that must run first |
 | `breakpoints` | number[] | `[]` | Ticks for debug pause |
+
+`flintVersion` is checked before full parsing. Current Flint implementations accept specs up to version `1.0.0`; incompatible files are reported as skipped instead of executed.
 
 ## Setup Section
 
@@ -77,11 +81,12 @@ The setup section configures the test environment.
     "cleanup": { "region": [[0,0,0], [5,5,5]] },
     "player": {
       "inventory": {
-        "hotbar1": { "item": "minecraft:diamond_axe", "count": 1 },
-        "hotbar2": { "item": "minecraft:honeycomb", "count": 64 },
-        "off_hand": { "item": "minecraft:shield", "count": 1 }
+        "hotbar1": { "id": "minecraft:diamond_axe", "count": 1 },
+        "hotbar2": { "id": "minecraft:honeycomb", "count": 64 },
+        "off_hand": { "id": "minecraft:shield", "count": 1 }
       },
-      "selectedHotbar": 1
+      "selected_hotbar": 1,
+      "game_mode": "Creative"
     }
   }
 }
@@ -97,6 +102,14 @@ The setup section configures the test environment.
 | `chestplate` | Chestplate |
 | `leggings` | Leggings |
 | `boots` | Boots |
+
+Items use the same object shape in setup and inventory assertions:
+
+```json
+{ "id": "minecraft:honeycomb", "count": 64 }
+```
+
+Additional item data can be flattened into the object when an adapter supports it.
 
 ## Timeline Section
 
@@ -162,6 +175,8 @@ minecraft:lever[powered=false,face=floor,facing=north]
 - **Booleans:** `true`, `false`
 - **Numbers:** `15`, `0`
 
+Flint stores block properties as strings internally, so these examples become `"north"`, `"true"`, and `"15"` after parsing.
+
 ## Tags
 
 Tags enable filtering and grouping of tests.
@@ -193,6 +208,8 @@ Flint automatically validates tests when loading:
 2. **Region valid** - min ≤ max for all coordinates
 3. **Dimensions check** - Region not larger than allowed
 4. **Positions check** - All timeline positions within region
+
+The cleanup dimension limits are `15 x 384 x 15` blocks. `fill` coordinates may be written in either corner order, but cleanup validation expects a valid min/max region.
 
 Errors are reported with file, line, and column:
 ```

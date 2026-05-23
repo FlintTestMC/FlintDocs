@@ -11,10 +11,11 @@ Flint-Tests sind JSON-Dateien mit einer definierten Struktur. Diese Seite erklä
 
 ```json
 {
-  "flintVersion": "0.1.0",
+  "flintVersion": "1.0.0",
   "name": "Testname",
   "description": "Optionale Beschreibung",
   "tags": ["unit", "redstone"],
+  "minecraftIds": ["minecraft:lever"],
   "dependencies": [],
   "setup": {
     "cleanup": {
@@ -44,8 +45,11 @@ Flint-Tests sind JSON-Dateien mit einer definierten Struktur. Diese Seite erklä
 | `flintVersion` | string | - | Flint-Version für Kompatibilität |
 | `description` | string | - | Ausführliche Beschreibung |
 | `tags` | string[] | `["default"]` | Tags für Filterung |
+| `minecraftIds` | string[] | `[]` | Minecraft-Block- oder Item-IDs, die der Test abdeckt |
 | `dependencies` | string[] | `[]` | Tests, die vorher laufen müssen |
 | `breakpoints` | number[] | `[]` | Ticks für Debug-Pause |
+
+`flintVersion` wird vor dem vollständigen Parsen geprüft. Aktuelle Flint-Implementierungen akzeptieren Specs bis `1.0.0`; inkompatible Dateien werden als übersprungen gemeldet.
 
 ## Setup-Sektion
 
@@ -77,11 +81,12 @@ Die Setup-Sektion konfiguriert die Testumgebung.
     "cleanup": { "region": [[0,0,0], [5,5,5]] },
     "player": {
       "inventory": {
-        "hotbar1": { "item": "minecraft:diamond_axe", "count": 1 },
-        "hotbar2": { "item": "minecraft:honeycomb", "count": 64 },
-        "off_hand": { "item": "minecraft:shield", "count": 1 }
+        "hotbar1": { "id": "minecraft:diamond_axe", "count": 1 },
+        "hotbar2": { "id": "minecraft:honeycomb", "count": 64 },
+        "off_hand": { "id": "minecraft:shield", "count": 1 }
       },
-      "selectedHotbar": 1
+      "selected_hotbar": 1,
+      "game_mode": "Creative"
     }
   }
 }
@@ -97,6 +102,14 @@ Die Setup-Sektion konfiguriert die Testumgebung.
 | `chestplate` | Brustpanzer |
 | `leggings` | Beinschutz |
 | `boots` | Stiefel |
+
+Items verwenden in Setup und Inventory-Assertions dieselbe Form:
+
+```json
+{ "id": "minecraft:honeycomb", "count": 64 }
+```
+
+Zusätzliche Item-Daten können direkt in das Objekt geschrieben werden, wenn der Adapter sie unterstützt.
 
 ## Timeline-Sektion
 
@@ -162,6 +175,8 @@ minecraft:lever[powered=false,face=floor,facing=north]
 - **Booleans:** `true`, `false`
 - **Zahlen:** `15`, `0`
 
+Flint speichert Block-Properties intern als Strings. Die Beispiele werden also nach dem Parsen zu `"north"`, `"true"` und `"15"`.
+
 ## Tags
 
 Tags ermöglichen das Filtern und Gruppieren von Tests.
@@ -173,3 +188,12 @@ Tags ermöglichen das Filtern und Gruppieren von Tests.
 ```
 
 Tests ohne Tags werden automatisch dem Tag `default` zugewiesen.
+
+## Validierung
+
+Flint prüft beim Laden:
+
+1. `setup.cleanup.region` muss vorhanden sein.
+2. Die Cleanup-Region darf höchstens `15 x 384 x 15` Blöcke groß sein.
+3. Timeline-Positionen müssen innerhalb der Cleanup-Region liegen.
+4. JSON-Fehler werden mit Datei, Zeile und Spalte gemeldet.

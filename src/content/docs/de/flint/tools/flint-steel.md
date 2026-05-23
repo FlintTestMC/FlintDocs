@@ -44,7 +44,9 @@ Flint-Steel bietet:
 ### In Rust-Tests
 
 ```rust
+use flint_core::utils::get_test_path;
 use steel_flint::{SteelAdapter, TestLoader, TestRunner};
+use std::{path::PathBuf, sync::Arc};
 
 #[test]
 fn run_flint_tests() {
@@ -52,12 +54,13 @@ fn run_flint_tests() {
     steel_flint::init();
 
     // Tests aus FlintBench laden
-    let loader = TestLoader::new("./FlintBenchmark/tests", true).unwrap();
-    let specs = loader.collect_all().unwrap();
+    let test_path = PathBuf::from(get_test_path());
+    let loader = TestLoader::new(&test_path, true).unwrap();
+    let specs = loader.load_all_specs(false).unwrap();
 
     // Tests ausführen
     let adapter = SteelAdapter::new();
-    let runner = TestRunner::new(&adapter);
+    let runner = TestRunner::new(Arc::new(adapter));
     let summary = runner.run_tests(&specs);
 
     assert_eq!(summary.failed_tests, 0);
@@ -66,7 +69,7 @@ fn run_flint_tests() {
 
 ### Umgebungsvariablen
 
-Tests mit Umgebungsvariablen filtern, mehr informationen sind [here](../../ENV):
+Tests mit Umgebungsvariablen filtern. Die vollständige Priorität steht unter [Umgebungsvariablen](../../env/):
 
 ```bash
 # Spezifischen Test nach Namen ausführen
@@ -141,14 +144,16 @@ Für Tests mit Spieler-Interaktionen (`use_item_on`, Inventar):
 
 ## Integration mit FlintBench
 
-Flint-Steel kann Tests aus [FlintBench](../flintbench/) ausführen, dafür muss die ENV variable `TEST_PATH` gesetzt werden mehr [hier](../../ENV), es kann auch der Pfad hinzugefügt werden statt `get_test_path` (nicht empfohlen):
+Flint-Steel kann Tests aus [FlintBench](./flintbench/) ausführen. Setze `TEST_PATH` oder verwende `flint_core::utils::get_test_path()`, damit lokale und CI-Läufe denselben Pfad nutzen:
 
 ```rust
-let loader = TestLoader::new(get_test_path(), true)?;
-let specs = loader.collect_by_tags(&["water", "connectible"])?;
+let test_path = PathBuf::from(get_test_path());
+let loader = TestLoader::new(&test_path, true)?;
+let tags = vec!["water".to_string(), "connectible".to_string()];
+let specs = loader.load_specs_by_tags(&tags, false)?;
 
 let adapter = SteelAdapter::new();
-let runner = TestRunner::new(&adapter);
+let runner = TestRunner::new(Arc::new(adapter));
 let summary = runner.run_tests(&specs);
 ```
 
@@ -158,26 +163,30 @@ Andere Minecraft-Server-Implementierungen können eigene Flint-Adapter erstellen
 
 ```rust
 pub trait FlintAdapter {
-    type World: FlintWorld;
-    fn create_world(&self, cleanup_region: Region) -> Self::World;
+    fn create_test_world(&self) -> Box<dyn FlintWorld>;
+    fn server_info(&self) -> ServerInfo;
 }
 
 pub trait FlintWorld {
-    fn place_block(&mut self, pos: BlockPos, block: &BlockSpec);
-    fn get_block(&self, pos: BlockPos) -> BlockSpec;
     fn do_tick(&mut self);
-    // ...
+    fn current_tick(&self) -> u64;
+    fn get_block(&self, pos: BlockPos) -> Block;
+    fn set_block(&mut self, pos: BlockPos, block: &Block);
+    fn create_player(&mut self) -> Box<dyn FlintPlayer>;
 }
 
 pub trait FlintPlayer {
-    fn set_slot(&mut self, slot: Slot, item: ItemStack);
-    fn use_item_on(&mut self, pos: BlockPos, face: Face);
-    // ...
+    fn set_slot(&mut self, slot: PlayerSlot, item: Option<&Item>);
+    fn get_slot(&self, slot: PlayerSlot, requested_data: Vec<String>) -> Option<Item>;
+    fn select_hotbar(&mut self, slot: u8);
+    fn selected_hotbar(&self) -> u8;
+    fn use_item_on(&mut self, pos: BlockPos, face: &BlockFace);
+    fn set_game_mode(&mut self, mode: GameMode);
 }
 ```
 
 ## Nächste Schritte
 
-- [FlintBench](../flintbench/) - Test-Suite für Flint-Steel
-- [FlintCLI](../flintcli/) - Alternativer Black-Box-Test-Ansatz
-- [Server-Integration](../../integration) - Flint für andere Server implementieren
+- [FlintBench](./flintbench/) - Test-Suite für Flint-Steel
+- [FlintCLI](./flintcli/) - Alternativer Black-Box-Test-Ansatz
+- [Server-Integration](../../integration/) - Flint für andere Server implementieren
